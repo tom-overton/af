@@ -59,8 +59,8 @@ void LightsN_disp(LightsN* lights, GraphicsContext* gfxCtx) {
 
     OPEN_DISPS(gfxCtx);
 
-    opaGfx = POLY_OPA_DISP;
-    xluGfx = POLY_XLU_DISP;
+    opaGfx = NOW_POLY_OPA_DISP;
+    xluGfx = NOW_POLY_XLU_DISP;
 
     gSPNumLights(opaGfx++, lights->diffuse_count);
     gSPNumLights(xluGfx++, lights->diffuse_count);
@@ -78,8 +78,8 @@ void LightsN_disp(LightsN* lights, GraphicsContext* gfxCtx) {
     gSPLight(opaGfx++, &lights->lights.a.l, i);
     gSPLight(xluGfx++, &lights->lights.a.l, i);
 
-    POLY_OPA_DISP = opaGfx;
-    POLY_XLU_DISP = xluGfx;
+    NOW_POLY_OPA_DISP = opaGfx;
+    NOW_POLY_XLU_DISP = xluGfx;
 
     CLOSE_DISPS(gfxCtx);
 }
@@ -339,7 +339,7 @@ void Light_list_point_draw(Game_Play* game_play) {
     Gfx* gfx;
 
     OPEN_DISPS(game_play->state.gfxCtx);
-    gfx = func_800BD7C0_jp(POLY_XLU_DISP);
+    gfx = func_800BD7C0_jp(NOW_POLY_XLU_DISP);
 
     gDPSetAlphaDither(gfx++, G_AD_NOISE);
     gDPSetColorDither(gfx++, G_CD_MAGICSQ);
@@ -363,7 +363,7 @@ void Light_list_point_draw(Game_Play* game_play) {
         lightNode = lightNode->next;
     }
 
-    POLY_XLU_DISP = gfx;
+    NOW_POLY_XLU_DISP = gfx;
 
     CLOSE_DISPS(game_play->state.gfxCtx);
 }

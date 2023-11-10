@@ -35,12 +35,12 @@ typedef struct GraphicsContext {
     /* 0x300 */ f32 unk_300;
 } GraphicsContext; // size >= 0x304
 
-#define OVERLAY_DISP __gfxCtx->overlay.p
-#define POLY_OPA_DISP __gfxCtx->polyOpa.p
-#define POLY_XLU_DISP __gfxCtx->polyXlu.p
-#define UNK_2B0_DISP __gfxCtx->unk_2B0.p
-#define UNK_2C0_DISP __gfxCtx->unk_2C0.p
-#define LIGHT_DISP __gfxCtx->light.p
+#define NOW_OVERLAY_DISP __gfxCtx->overlay.p
+#define NOW_POLY_OPA_DISP __gfxCtx->polyOpa.p
+#define NOW_POLY_XLU_DISP __gfxCtx->polyXlu.p
+#define NOW_UNK_2B0_DISP __gfxCtx->unk_2B0.p
+#define NOW_UNK_2C0_DISP __gfxCtx->unk_2C0.p
+#define NOW_LIGHT_DISP __gfxCtx->light.p
 
 // __gfxCtx shouldn't be used directly.
 // Use the DISP macros defined above when writing to display buffers.
@@ -51,9 +51,52 @@ typedef struct GraphicsContext {
         do {} while (0)
 
 #define CLOSE_DISPS(gfxCtx) \
-    (void)0;                \
+        (void)0;            \
     }                       \
     (void)0
+
+#define OPEN_POLY_OPA_DISPS(gfxCtx)         \
+    OPEN_DISPS(gfxCtx);                     \
+    {                                       \
+        Gfx* __polyOpa = NOW_POLY_OPA_DISP; \
+        s32 __opaPad UNUSED;                \
+        do {} while (0)
+
+#define CLOSE_POLY_OPA_DISPS(gfxCtx)   \
+        NOW_POLY_OPA_DISP = __polyOpa; \
+        (void)0;                       \
+    }                                  \
+    CLOSE_DISPS(gfxCtx)
+
+#define OPEN_POLY_XLU_DISPS(gfxCtx)         \
+    OPEN_DISPS(gfxCtx);                     \
+    {                                       \
+        Gfx* __polyXlu = NOW_POLY_XLU_DISP; \
+        s32 __xluPad UNUSED;                \
+        do {} while (0)
+
+#define CLOSE_POLY_XLU_DISPS(gfxCtx)   \
+        NOW_POLY_XLU_DISP = __polyXlu; \
+        (void)0;                       \
+    }                                  \
+    CLOSE_DISPS(gfxCtx)
+
+#define OPEN_LIGHT_DISPS(gfxCtx)       \
+    OPEN_DISPS(gfxCtx);                \
+    {                                  \
+        Gfx* __light = NOW_LIGHT_DISP; \
+        s32 __lightPad UNUSED;         \
+        do {} while (0)
+
+#define CLOSE_LIGHT_DISPS(gfxCtx) \
+        NOW_LIGHT_DISP = __light; \
+        (void)0;                  \
+    }                             \
+    CLOSE_DISPS(gfxCtx)
+
+#define POLY_OPA_DISP __polyOpa
+#define POLY_XLU_DISP __polyXlu
+#define LIGHT_DISP __light
 
 #define qs1616(e) ((s32)((e)*0x00010000))
 

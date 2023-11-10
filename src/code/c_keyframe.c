@@ -630,18 +630,18 @@ void cKF_Si3_draw_SV_R_child(Game_Play* game_play, SkeletonInfoR* skeletonInfo, 
             _Matrix_to_Mtx(*mtx);
 
             if (displayBufferFlag & 1) {
-                gSPMatrix(POLY_XLU_DISP++, *mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_XLU_DISP++, newDlist);
+                gSPMatrix(NOW_POLY_XLU_DISP++, *mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                gSPDisplayList(NOW_POLY_XLU_DISP++, newDlist);
             } else {
-                gSPMatrix(POLY_OPA_DISP++, *mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_OPA_DISP++, newDlist);
+                gSPMatrix(NOW_POLY_OPA_DISP++, *mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                gSPDisplayList(NOW_POLY_OPA_DISP++, newDlist);
             }
 
             (*mtx)++;
 
         } else if (shape != NULL) {
             _Matrix_to_Mtx(*mtx);
-            gSPMatrix(POLY_OPA_DISP++, *mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(NOW_POLY_OPA_DISP++, *mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             (*mtx)++;
         }
     }
@@ -672,8 +672,8 @@ void cKF_Si3_draw_R_SV(Game_Play* game_play, SkeletonInfoR* skeletonInfo, Mtx* m
 
     if (mtx != NULL) {
         OPEN_DISPS(game_play->state.gfxCtx);
-        gSPSegment(POLY_OPA_DISP++, 0x0D, mtx);
-        gSPSegment(POLY_XLU_DISP++, 0x0D, mtx);
+        gSPSegment(NOW_POLY_OPA_DISP++, 0x0D, mtx);
+        gSPSegment(NOW_POLY_XLU_DISP++, 0x0D, mtx);
         jointIndex = 0;
         cKF_Si3_draw_SV_R_child(game_play, skeletonInfo, &jointIndex, beforeCallback, afterCallback, arg, &mtx);
         CLOSE_DISPS(game_play->state.gfxCtx);

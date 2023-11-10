@@ -545,26 +545,26 @@ void func_80803810_jp(Game_Play* game_play, GraphicsContext* gfxCtx) {
 
     OPEN_DISPS(gfxCtx);
 
-    gSPSegment(POLY_OPA_DISP++, 0x00, NULL);
-    gSPSegment(POLY_XLU_DISP++, 0x00, NULL);
-    gSPSegment(OVERLAY_DISP++, 0x00, NULL);
-    gSPSegment(UNK_2B0_DISP++, 0x00, NULL);
-    gSPSegment(UNK_2C0_DISP++, 0x00, NULL);
-    gSPSegment(LIGHT_DISP++, 0x00, NULL);
+    gSPSegment(NOW_POLY_OPA_DISP++, 0x00, NULL);
+    gSPSegment(NOW_POLY_XLU_DISP++, 0x00, NULL);
+    gSPSegment(NOW_OVERLAY_DISP++, 0x00, NULL);
+    gSPSegment(NOW_UNK_2B0_DISP++, 0x00, NULL);
+    gSPSegment(NOW_UNK_2C0_DISP++, 0x00, NULL);
+    gSPSegment(NOW_LIGHT_DISP++, 0x00, NULL);
 
-    gSPSegment(POLY_OPA_DISP++, 0x04, temp_v0);
-    gSPSegment(POLY_XLU_DISP++, 0x04, temp_v0);
-    gSPSegment(OVERLAY_DISP++, 0x04, temp_v0);
-    gSPSegment(UNK_2B0_DISP++, 0x04, temp_v0);
-    gSPSegment(UNK_2C0_DISP++, 0x04, temp_v0);
-    gSPSegment(LIGHT_DISP++, 0x04, temp_v0);
+    gSPSegment(NOW_POLY_OPA_DISP++, 0x04, temp_v0);
+    gSPSegment(NOW_POLY_XLU_DISP++, 0x04, temp_v0);
+    gSPSegment(NOW_OVERLAY_DISP++, 0x04, temp_v0);
+    gSPSegment(NOW_UNK_2B0_DISP++, 0x04, temp_v0);
+    gSPSegment(NOW_UNK_2C0_DISP++, 0x04, temp_v0);
+    gSPSegment(NOW_LIGHT_DISP++, 0x04, temp_v0);
 
-    gSPSegment(POLY_OPA_DISP++, 0x02, game_play->unk_010C);
-    gSPSegment(POLY_XLU_DISP++, 0x02, game_play->unk_010C);
-    gSPSegment(OVERLAY_DISP++, 0x02, game_play->unk_010C);
-    gSPSegment(UNK_2B0_DISP++, 0x02, game_play->unk_010C);
-    gSPSegment(UNK_2C0_DISP++, 0x02, game_play->unk_010C);
-    gSPSegment(LIGHT_DISP++, 0x02, game_play->unk_010C);
+    gSPSegment(NOW_POLY_OPA_DISP++, 0x02, game_play->unk_010C);
+    gSPSegment(NOW_POLY_XLU_DISP++, 0x02, game_play->unk_010C);
+    gSPSegment(NOW_OVERLAY_DISP++, 0x02, game_play->unk_010C);
+    gSPSegment(NOW_UNK_2B0_DISP++, 0x02, game_play->unk_010C);
+    gSPSegment(NOW_UNK_2C0_DISP++, 0x02, game_play->unk_010C);
+    gSPSegment(NOW_LIGHT_DISP++, 0x02, game_play->unk_010C);
 
     CLOSE_DISPS(gfxCtx);
 }
@@ -572,8 +572,8 @@ void func_80803810_jp(Game_Play* game_play, GraphicsContext* gfxCtx) {
 void setupFog(Game_Play* game_play, GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    POLY_OPA_DISP = game_play_set_fog(game_play, POLY_OPA_DISP);
-    POLY_XLU_DISP = game_play_set_fog(game_play, POLY_XLU_DISP);
+    NOW_POLY_OPA_DISP = game_play_set_fog(game_play, NOW_POLY_OPA_DISP);
+    NOW_POLY_XLU_DISP = game_play_set_fog(game_play, NOW_POLY_XLU_DISP);
 
     CLOSE_DISPS(gfxCtx);
 }
@@ -599,7 +599,7 @@ void setupViewMatrix(Game_Play* game_play, GraphicsContext* __gfxCtx, GraphicsCo
 
     game_play->unk_1E9C = _MtxF_to_Mtx(&game_play->billboardMtxF, GRAPH_ALLOC(gfxCtx2, sizeof(MtxF) * 1));
 
-    gSPSegment(POLY_OPA_DISP++, 0x01, game_play->unk_1E9C);
+    gSPSegment(NOW_POLY_OPA_DISP++, 0x01, game_play->unk_1E9C);
 }
 
 s32 makeBumpTexture(Game_Play* game_play, GraphicsContext* __gfxCtx, GraphicsContext* gfxCtx2) {
@@ -607,10 +607,10 @@ s32 makeBumpTexture(Game_Play* game_play, GraphicsContext* __gfxCtx, GraphicsCon
     {
         Gfx* sp194;
         Gfx* sp190;
-        sp190 = POLY_OPA_DISP;
+        sp190 = NOW_POLY_OPA_DISP;
         sp194 = gfxopen(sp190);
 
-        gSPDisplayList(OVERLAY_DISP++, sp194);
+        gSPDisplayList(NOW_OVERLAY_DISP++, sp194);
 
         if (game_play->unk_1EE3 == 3) {
             Game_Play1938 sp60;
@@ -636,14 +636,14 @@ s32 makeBumpTexture(Game_Play* game_play, GraphicsContext* __gfxCtx, GraphicsCon
         gSPEndDisplayList(sp194++);
 
         gfxclose(sp190, sp194);
-        POLY_OPA_DISP = sp194;
+        NOW_POLY_OPA_DISP = sp194;
     }
 
     if (game_play->unk_1EE2 == 3) {
-        Gfx* sp48 = POLY_OPA_DISP;
+        Gfx* sp48 = NOW_POLY_OPA_DISP;
 
         fbdemo_draw(&fbdemo, &sp48);
-        POLY_OPA_DISP = sp48;
+        NOW_POLY_OPA_DISP = sp48;
         return 1;
     }
 
@@ -657,10 +657,10 @@ s32 makeBumpTexture(Game_Play* game_play, GraphicsContext* __gfxCtx, GraphicsCon
     }
 
     if (game_play->submenu.unk_00 == 3) {
-        Gfx* sp44 = POLY_OPA_DISP;
+        Gfx* sp44 = NOW_POLY_OPA_DISP;
 
         PreRender_loadFrameBufferCopy(&game_play->unk_1DC0, &sp44);
-        POLY_OPA_DISP = sp44;
+        NOW_POLY_OPA_DISP = sp44;
         return 1;
     }
 
@@ -680,10 +680,10 @@ s32 makeBumpTexture(Game_Play* game_play, GraphicsContext* __gfxCtx, GraphicsCon
         Gfx* sp3C;
         Gfx* sp38;
 
-        sp38 = POLY_OPA_DISP;
+        sp38 = NOW_POLY_OPA_DISP;
         sp3C = gfxopen(sp38);
 
-        gSPDisplayList(OVERLAY_DISP++, sp3C);
+        gSPDisplayList(NOW_OVERLAY_DISP++, sp3C);
 
         game_play->unk_1DC0.unk_10 = gfxCtx2->unk_2E4;
         game_play->unk_1DC0.unk_14 = gfxCtx2->unk_008;
@@ -700,7 +700,7 @@ s32 makeBumpTexture(Game_Play* game_play, GraphicsContext* __gfxCtx, GraphicsCon
         gSPEndDisplayList(sp3C++);
 
         gfxclose(sp38, sp3C);
-        POLY_OPA_DISP = sp3C;
+        NOW_POLY_OPA_DISP = sp3C;
 
         REGADDR(SREG, 0x21) |= 1;
         return 0;
@@ -714,7 +714,7 @@ void draw_version(GraphicsContext* gfxCtx) {
 
     OPEN_DISPS(gfxCtx);
 
-    temp_s0 = func_800BD720_jp(OVERLAY_DISP);
+    temp_s0 = func_800BD720_jp(NOW_OVERLAY_DISP);
     printer = alloca(sizeof(gfxprint));
 
     gfxprint_init(printer);
@@ -728,7 +728,7 @@ void draw_version(GraphicsContext* gfxCtx) {
     gfxprint_printf(printer, "[Date:%s]", __DateTime__);
     temp_s0 = gfxprint_close(printer);
     gfxprint_cleanup(printer);
-    OVERLAY_DISP = temp_s0;
+    NOW_OVERLAY_DISP = temp_s0;
 
     CLOSE_DISPS(gfxCtx);
 }

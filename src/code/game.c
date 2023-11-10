@@ -93,10 +93,10 @@ void game_debug_draw_last(Game* game, GraphicsContext* gfxCtx) {
         {
             UNUSED s32 requiredScopeTemp;
 
-            gfxHead = POLY_OPA_DISP;
+            gfxHead = NOW_POLY_OPA_DISP;
             gfx = gfxopen(gfxHead);
 
-            gSPDisplayList(OVERLAY_DISP++, gfx);
+            gSPDisplayList(NOW_OVERLAY_DISP++, gfx);
         }
 
         B_80145040_jp = CONTROLLER1(game)->press.button | CONTROLLER1(game)->cur.button;
@@ -106,7 +106,7 @@ void game_debug_draw_last(Game* game, GraphicsContext* gfxCtx) {
         gSPEndDisplayList(gfx++);
 
         gfxclose(gfxHead, gfx);
-        POLY_OPA_DISP = gfx;
+        NOW_POLY_OPA_DISP = gfx;
 
         do {
         } while (0);
@@ -129,29 +129,29 @@ void game_draw_first(GraphicsContext* gfxCtx) {
 
     OPEN_DISPS(gfxCtx);
 
-    gSPSegment(POLY_OPA_DISP++, 0x00, NULL);
-    gSPSegment(POLY_OPA_DISP++, 0x0F, gfxCtx->unk_2E4);
-    gSPSegment(POLY_OPA_DISP++, 0x0E, temp_v0);
+    gSPSegment(NOW_POLY_OPA_DISP++, 0x00, NULL);
+    gSPSegment(NOW_POLY_OPA_DISP++, 0x0F, gfxCtx->unk_2E4);
+    gSPSegment(NOW_POLY_OPA_DISP++, 0x0E, temp_v0);
 
-    gSPSegment(POLY_XLU_DISP++, 0x00, NULL);
-    gSPSegment(POLY_XLU_DISP++, 0x0F, gfxCtx->unk_2E4);
-    gSPSegment(POLY_XLU_DISP++, 0x0E, temp_v0);
+    gSPSegment(NOW_POLY_XLU_DISP++, 0x00, NULL);
+    gSPSegment(NOW_POLY_XLU_DISP++, 0x0F, gfxCtx->unk_2E4);
+    gSPSegment(NOW_POLY_XLU_DISP++, 0x0E, temp_v0);
 
-    gSPSegment(OVERLAY_DISP++, 0x00, NULL);
-    gSPSegment(OVERLAY_DISP++, 0x0F, gfxCtx->unk_2E4);
-    gSPSegment(OVERLAY_DISP++, 0x0E, temp_v0);
+    gSPSegment(NOW_OVERLAY_DISP++, 0x00, NULL);
+    gSPSegment(NOW_OVERLAY_DISP++, 0x0F, gfxCtx->unk_2E4);
+    gSPSegment(NOW_OVERLAY_DISP++, 0x0E, temp_v0);
 
-    gSPSegment(UNK_2B0_DISP++, 0x00, NULL);
-    gSPSegment(UNK_2B0_DISP++, 0x0F, gfxCtx->unk_2E4);
-    gSPSegment(UNK_2B0_DISP++, 0x0E, temp_v0);
+    gSPSegment(NOW_UNK_2B0_DISP++, 0x00, NULL);
+    gSPSegment(NOW_UNK_2B0_DISP++, 0x0F, gfxCtx->unk_2E4);
+    gSPSegment(NOW_UNK_2B0_DISP++, 0x0E, temp_v0);
 
-    gSPSegment(UNK_2C0_DISP++, 0x00, NULL);
-    gSPSegment(UNK_2C0_DISP++, 0x0F, gfxCtx->unk_2E4);
-    gSPSegment(UNK_2C0_DISP++, 0x0E, temp_v0);
+    gSPSegment(NOW_UNK_2C0_DISP++, 0x00, NULL);
+    gSPSegment(NOW_UNK_2C0_DISP++, 0x0F, gfxCtx->unk_2E4);
+    gSPSegment(NOW_UNK_2C0_DISP++, 0x0E, temp_v0);
 
-    gSPSegment(LIGHT_DISP++, 0x00, NULL);
-    gSPSegment(LIGHT_DISP++, 0x0F, gfxCtx->unk_2E4);
-    gSPSegment(LIGHT_DISP++, 0x0E, temp_v0);
+    gSPSegment(NOW_LIGHT_DISP++, 0x00, NULL);
+    gSPSegment(NOW_LIGHT_DISP++, 0x0F, gfxCtx->unk_2E4);
+    gSPSegment(NOW_LIGHT_DISP++, 0x0E, temp_v0);
 
     CLOSE_DISPS(gfxCtx);
 }
@@ -162,13 +162,13 @@ void game_draw_last(GraphicsContext* gfxCtx) {
 
     OPEN_DISPS(gfxCtx);
 
-    gfx = gfxopen(gfxHead = POLY_OPA_DISP);
+    gfx = gfxopen(gfxHead = NOW_POLY_OPA_DISP);
 
-    gSPDisplayList(OVERLAY_DISP++, gfx);
+    gSPDisplayList(NOW_OVERLAY_DISP++, gfx);
     gSPEndDisplayList(gfx++);
 
     gfxclose(gfxHead, gfx);
-    POLY_OPA_DISP = gfx;
+    NOW_POLY_OPA_DISP = gfx;
 
     CLOSE_DISPS(gfxCtx);
 }

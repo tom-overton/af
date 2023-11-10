@@ -604,8 +604,6 @@ f32 move_data_1027[2][4] = { { 2.0f, 0.0f, 300.0f, 1.0f }, { 0.5f, 120.0f, 0.0f,
 
 void mSM_setup_view(Submenu* submenu, GraphicsContext* gfxCtx, s32 arg1) {
     Mtx* mtx;
-    UNUSED s32 pad;
-    Gfx* gfx;
 
     if (arg1 != 0) {
         mtx = GRAPH_ALLOC(gfxCtx, sizeof(Mtx));
@@ -615,9 +613,8 @@ void mSM_setup_view(Submenu* submenu, GraphicsContext* gfxCtx, s32 arg1) {
         mtx = submenu->unk_2C->unk_1072C;
     }
 
-    OPEN_DISPS(gfxCtx);
+    OPEN_POLY_OPA_DISPS(gfxCtx);
 
-    gfx = POLY_OPA_DISP;
     if (arg1 == 0) {
         Game_Play1938* var_a0;
 
@@ -627,11 +624,11 @@ void mSM_setup_view(Submenu* submenu, GraphicsContext* gfxCtx, s32 arg1) {
             var_a0 = &((Game__00743CD0*)gamePT)->unk_00E0;
         }
 
-        gDPPipeSync(gfx++);
-        gDPSetScissor(gfx++, G_SC_NON_INTERLACE, var_a0->unk_010, var_a0->unk_008, var_a0->unk_014, var_a0->unk_00C);
-        gSPViewport(gfx++, &var_a0->vp);
-        gDPSetColorImage(gfx++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, gfxCtx->unk_2E4);
-        gDPSetScissor(gfx++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        gDPPipeSync(POLY_OPA_DISP++);
+        gDPSetScissor(POLY_OPA_DISP++, G_SC_NON_INTERLACE, var_a0->unk_010, var_a0->unk_008, var_a0->unk_014, var_a0->unk_00C);
+        gSPViewport(POLY_OPA_DISP++, &var_a0->vp);
+        gDPSetColorImage(POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, gfxCtx->unk_2E4);
+        gDPSetScissor(POLY_OPA_DISP++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     }
 
     //! FAKE
@@ -639,22 +636,19 @@ void mSM_setup_view(Submenu* submenu, GraphicsContext* gfxCtx, s32 arg1) {
     if (1) {}
     if (1) {}
 
-    gSPMatrix(gfx++, mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
-    POLY_OPA_DISP = gfx;
+    gSPMatrix(POLY_OPA_DISP++, mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
 
-    CLOSE_DISPS(gfxCtx);
+    CLOSE_POLY_OPA_DISPS(gfxCtx);
 }
 
 void mSM_set_char_matrix(GraphicsContext* gfxCtx) {
     Gfx* gfx;
 
-    OPEN_DISPS(gfxCtx);
+    OPEN_POLY_OPA_DISPS(gfxCtx);
 
-    gfx = POLY_OPA_DISP;
-    gSPMatrix(gfx++, &Mtx_clear, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    POLY_OPA_DISP = gfx;
+    gSPMatrix(POLY_OPA_DISP++, &Mtx_clear, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    CLOSE_DISPS(gfxCtx);
+    CLOSE_POLY_OPA_DISPS(gfxCtx);
 }
 
 #ifdef NON_EQUIVALENT
@@ -763,19 +757,19 @@ void mSM_cbuf_copy(GraphicsContext* gfxCtx, PreRender* render, s32 arg2, s32 arg
 
     var_a3 = 0x1000 / (s32)(((var_t5 + 3) & ~3) * 2);
     if (arg4 != 0) {
-        sp8C = POLY_OPA_DISP;
+        sp8C = NOW_POLY_OPA_DISP;
         render->unk_00 = 0x140;
         render->unk_02 = 0xF0;
         render->unk_10 = gfxCtx->unk_2E4;
         PreRender_CopyRGBC(render, &sp8C, arg2 - var_t3, arg3 - var_v1);
-        POLY_OPA_DISP = sp8C;
+        NOW_POLY_OPA_DISP = sp8C;
     } else {
-        gDPPipeSync(POLY_OPA_DISP++);
-        gSPClearGeometryMode(POLY_OPA_DISP++, G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
+        gDPPipeSync(NOW_POLY_OPA_DISP++);
+        gSPClearGeometryMode(NOW_POLY_OPA_DISP++, G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
                                                   G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH | G_CLIPPING |
                                                   0x0040F9FA);
 
-        gDPSetOtherMode(POLY_OPA_DISP++,
+        gDPSetOtherMode(NOW_POLY_OPA_DISP++,
                         G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_NONE | G_TL_TILE |
                             G_TD_CLAMP | G_TP_NONE | G_CYC_COPY | G_PM_NPRIMITIVE,
                         G_AC_NONE | G_ZS_PRIM | G_RM_NOOP | G_RM_NOOP2);
@@ -784,13 +778,13 @@ void mSM_cbuf_copy(GraphicsContext* gfxCtx, PreRender* render, s32 arg2, s32 arg
         // gfxCtx->polyOpa.p = temp_v0_5 + 8;
         // temp_v0_5->words.w0 = ((var_t4 - 1) & 0xFFF) | 0xFF100000;
         // temp_v0_5->words.w1 = (u32) sp98;
-        gDPSetColorImage(POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, var_t4, sp98);
+        gDPSetColorImage(NOW_POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, var_t4, sp98);
 
         // temp_v0_6 = gfxCtx->polyOpa.p;
         // gfxCtx->polyOpa.p = temp_v0_6 + 8;
         // temp_v0_6->words.w0 = 0xED000000;
         // temp_v0_6->words.w1 = (((s32) ((f32) var_t4 * 4.0f) & 0xFFF) << 0xC) | ((s32) ((f32) var_ra * 4.0f) & 0xFFF);
-        gDPSetScissorFrac(POLY_OPA_DISP++, G_SC_NON_INTERLACE, 0, 0, (s32)var_t4 * 4.0f, (s32)var_ra * 4.0f);
+        gDPSetScissorFrac(NOW_POLY_OPA_DISP++, G_SC_NON_INTERLACE, 0, 0, (s32)var_t4 * 4.0f, (s32)var_ra * 4.0f);
 
         while ((s32)var_t0 > 0) {
             if ((s32)var_t0 < var_a3) {
@@ -805,7 +799,7 @@ void mSM_cbuf_copy(GraphicsContext* gfxCtx, PreRender* render, s32 arg2, s32 arg
             gfxCtx->polyOpa.p = temp_v0_8 + 8;
             temp_v0_8->words.w0 = ((spCC - 1) & 0xFFF) | 0xFD100000;
             temp_v0_8->words.w1 = (u32) sp9C;
-            // gDPSetTextureImage(POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, 0x12345678);
+            // gDPSetTextureImage(NOW_POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, 0x12345678);
 
             temp_v0_9 = gfxCtx->polyOpa.p;
             gfxCtx->polyOpa.p = temp_v0_9 + 8;
@@ -816,7 +810,7 @@ void mSM_cbuf_copy(GraphicsContext* gfxCtx, PreRender* render, s32 arg2, s32 arg
             //gfxCtx->polyOpa.p = temp_v0_10 + 8;
             //temp_v0_10->words.w1 = 0x00000000;
             //temp_v0_10->words.w0 = 0xE6000000;
-            gDPLoadSync(POLY_OPA_DISP++);
+            gDPLoadSync(NOW_POLY_OPA_DISP++);
 
             temp_v0_11 = gfxCtx->polyOpa.p;
             gfxCtx->polyOpa.p = temp_v0_11 + 8;
@@ -839,7 +833,7 @@ void mSM_cbuf_copy(GraphicsContext* gfxCtx, PreRender* render, s32 arg2, s32 arg
             temp_v0_14->words.w1 = (((temp_v0_7 * 4) & 0xFFF) << 0xC) | (((temp_a2 - 1) * 4) & 0xFFF);
             temp_v0_14->words.w0 = (((var_a1 * 4) & 0xFFF) << 0xC) | 0xF2000000 | ((var_t1 * 4) & 0xFFF);
 #endif
-            gDPLoadTextureTile(POLY_OPA_DISP++, sp9C, G_IM_FMT_RGBA, G_IM_SIZ_16b, spCC, 0, var_a1, var_t1, temp_v0_7,
+            gDPLoadTextureTile(NOW_POLY_OPA_DISP++, sp9C, G_IM_FMT_RGBA, G_IM_SIZ_16b, spCC, 0, var_a1, var_t1, temp_v0_7,
                                temp_a2 - 1, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
@@ -859,7 +853,7 @@ void mSM_cbuf_copy(GraphicsContext* gfxCtx, PreRender* render, s32 arg2, s32 arg
             temp_v0_17->words.w0 = 0xF1000000;
             temp_v0_17->words.w1 = 0x10000400;
 #endif
-            gSPTextureRectangle(POLY_OPA_DISP++, (var_a2 * 4), (var_t2 * 4), (((var_a2 + var_t5) - 1) * 4),
+            gSPTextureRectangle(NOW_POLY_OPA_DISP++, (var_a2 * 4), (var_t2 * 4), (((var_a2 + var_t5) - 1) * 4),
                                 ((var_t2 + var_a3 - 1) * 4), G_TX_RENDERTILE, (var_a1 << 0x5), (var_t1 << 5), 0x1000,
                                 0x0400);
 
@@ -884,39 +878,39 @@ void mSM_set_drawMode(GraphicsContext* gfxCtx, struct_func_8085C20C_jp_arg1* arg
 
     OPEN_DISPS(gfxCtx);
 
-    gSPSegment(POLY_OPA_DISP++, 0x00, NULL);
+    gSPSegment(NOW_POLY_OPA_DISP++, 0x00, NULL);
 
-    gDPPipeSync(POLY_OPA_DISP++);
-    gSPClearGeometryMode(POLY_OPA_DISP++, G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
+    gDPPipeSync(NOW_POLY_OPA_DISP++);
+    gSPClearGeometryMode(NOW_POLY_OPA_DISP++, G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
                                               G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH | G_CLIPPING |
                                               0x0040F9FA);
-    gSPTexture(POLY_OPA_DISP++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF);
-    gDPSetCombineMode(POLY_OPA_DISP++, G_CC_SHADE, G_CC_SHADE);
-    gDPSetOtherMode(POLY_OPA_DISP++,
+    gSPTexture(NOW_POLY_OPA_DISP++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF);
+    gDPSetCombineMode(NOW_POLY_OPA_DISP++, G_CC_SHADE, G_CC_SHADE);
+    gDPSetOtherMode(NOW_POLY_OPA_DISP++,
                     G_AD_DISABLE | G_CD_MAGICSQ | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_NONE | G_TL_TILE |
                         G_TD_CLAMP | G_TP_PERSP | G_CYC_FILL | G_PM_NPRIMITIVE,
                     G_AC_NONE | G_ZS_PIXEL | G_RM_NOOP | G_RM_NOOP2);
-    gSPLoadGeometryMode(POLY_OPA_DISP++, G_ZBUFFER | G_SHADE | G_CULL_BACK | G_LIGHTING | G_SHADING_SMOOTH);
+    gSPLoadGeometryMode(NOW_POLY_OPA_DISP++, G_ZBUFFER | G_SHADE | G_CULL_BACK | G_LIGHTING | G_SHADING_SMOOTH);
 
     temp_fv1 = temp_a3;
     temp_fa0 = temp_t1;
 
-    gDPSetScissorFrac(POLY_OPA_DISP++, G_SC_NON_INTERLACE, 0, 0, temp_fv1 * 4.0f, temp_fa0 * 4.0f);
+    gDPSetScissorFrac(NOW_POLY_OPA_DISP++, G_SC_NON_INTERLACE, 0, 0, temp_fv1 * 4.0f, temp_fa0 * 4.0f);
 
-    gSPClipRatio(POLY_OPA_DISP++, FRUSTRATIO_1);
+    gSPClipRatio(NOW_POLY_OPA_DISP++, FRUSTRATIO_1);
 
-    gDPSetColorImage(POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, temp_a3, arg1->unk_20);
+    gDPSetColorImage(NOW_POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, temp_a3, arg1->unk_20);
 
-    gDPSetFillColor(POLY_OPA_DISP++, (GPACK_RGBA5551(255, 255, 240, 0) << 16) | GPACK_RGBA5551(255, 255, 240, 0));
+    gDPSetFillColor(NOW_POLY_OPA_DISP++, (GPACK_RGBA5551(255, 255, 240, 0) << 16) | GPACK_RGBA5551(255, 255, 240, 0));
 
-    gDPFillRectangle(POLY_OPA_DISP++, 0, 0, temp_a3 - 1, temp_t1 - 1);
+    gDPFillRectangle(NOW_POLY_OPA_DISP++, 0, 0, temp_a3 - 1, temp_t1 - 1);
 
-    gDPPipeSync(POLY_OPA_DISP++);
+    gDPPipeSync(NOW_POLY_OPA_DISP++);
 
-    gDPSetColorImage(POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, temp_a3, arg1->unk_14);
+    gDPSetColorImage(NOW_POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, temp_a3, arg1->unk_14);
 
-    gDPPipeSync(POLY_OPA_DISP++);
-    gDPSetDepthImage(POLY_OPA_DISP++, arg1->unk_20);
+    gDPPipeSync(NOW_POLY_OPA_DISP++);
+    gDPSetDepthImage(NOW_POLY_OPA_DISP++, arg1->unk_20);
 
     {
         Vp* vp = GRAPH_ALLOC(gfxCtx, sizeof(Vp));
@@ -935,7 +929,7 @@ void mSM_set_drawMode(GraphicsContext* gfxCtx, struct_func_8085C20C_jp_arg1* arg
             vp->vp.vscale[3] = vp->vp.vtrans[3];
         }
 
-        gSPViewport(POLY_OPA_DISP++, vp);
+        gSPViewport(NOW_POLY_OPA_DISP++, vp);
 
         if (temp_a3 - 1 != 0x7F) {
             guPerspective(sp84, &sp7E, 35.0f, temp_fv1 / temp_fa0, 1.0f, 2000.0f, 1.0f);
@@ -943,8 +937,8 @@ void mSM_set_drawMode(GraphicsContext* gfxCtx, struct_func_8085C20C_jp_arg1* arg
             guPerspective(sp84, &sp7E, 20.0f, temp_fv1 / temp_fa0, 100.0f, 800.0f, 1.0f);
         }
 
-        gSPPerspNormalize(POLY_OPA_DISP++, sp7E);
-        gSPMatrix(POLY_OPA_DISP++, sp84, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+        gSPPerspNormalize(NOW_POLY_OPA_DISP++, sp7E);
+        gSPMatrix(NOW_POLY_OPA_DISP++, sp84, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
 
         {
             f32 yEye;
@@ -965,11 +959,11 @@ void mSM_set_drawMode(GraphicsContext* gfxCtx, struct_func_8085C20C_jp_arg1* arg
             }
         }
 
-        gSPMatrix(POLY_OPA_DISP++, sp54, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
-        gSPSetLights1(POLY_OPA_DISP++, light_data_622);
+        gSPMatrix(NOW_POLY_OPA_DISP++, sp54, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
+        gSPSetLights1(NOW_POLY_OPA_DISP++, light_data_622);
     }
 
-    POLY_OPA_DISP = gfx_set_fog_nosync(POLY_OPA_DISP++, 0xFF, 0xFF, 0xFF, 0xFF, 0x3D0, 0x500);
+    NOW_POLY_OPA_DISP = gfx_set_fog_nosync(NOW_POLY_OPA_DISP++, 0xFF, 0xFF, 0xFF, 0xFF, 0x3D0, 0x500);
 
     CLOSE_DISPS(gfxCtx);
 }
@@ -1046,7 +1040,7 @@ void mSM_draw_item(GraphicsContext* gfxCtx, f32 arg1, f32 arg2, f32 arg3, u16 ar
 
     OPEN_DISPS(gfxCtx);
 
-    gfx = POLY_OPA_DISP;
+    gfx = NOW_POLY_OPA_DISP;
 
     gDPPipeSync(gfx++);
     gDPSetAlphaCompare(gfx++, G_AC_THRESHOLD);
@@ -1115,7 +1109,7 @@ void mSM_draw_item(GraphicsContext* gfxCtx, f32 arg1, f32 arg2, f32 arg3, u16 ar
     gDPSetBlendColor(gfx++, 255, 255, 255, 8);
     gDPSetTexturePersp(gfx++, G_TP_PERSP);
 
-    POLY_OPA_DISP = gfx;
+    NOW_POLY_OPA_DISP = gfx;
 
     CLOSE_DISPS(gfxCtx);
 }
@@ -1152,7 +1146,7 @@ void mSM_draw_mail(GraphicsContext* arg0, f32 arg1, f32 arg2, f32 arg3, struct_f
 
     OPEN_DISPS(arg0);
 
-    gfx = POLY_OPA_DISP;
+    gfx = NOW_POLY_OPA_DISP;
 
     gDPPipeSync(gfx++);
     gSPMatrix(gfx++, _Matrix_to_Mtx_new(arg0), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -1180,7 +1174,7 @@ void mSM_draw_mail(GraphicsContext* arg0, f32 arg1, f32 arg2, f32 arg3, struct_f
     gDPSetAlphaCompare(gfx++, G_AC_NONE);
     gDPSetBlendColor(gfx++, 255, 255, 255, 8);
 
-    POLY_OPA_DISP = gfx;
+    NOW_POLY_OPA_DISP = gfx;
 
     CLOSE_DISPS(arg0);
 }

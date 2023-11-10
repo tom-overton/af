@@ -234,7 +234,7 @@ s32 aTOU_actor_draw_after(Game_Play* game_play, SkeletonInfoR* skeletonInfo, s32
             object = common_data.unk_10098->unk_AC(45);
             palette = common_data.unk_10098->unk_450(90);
             func_800BD5C0_jp(game_play->state.gfxCtx);
-            gfx = LIGHT_DISP;
+            gfx = NOW_LIGHT_DISP;
             gSPSegment(gfx++, 0x08, palette);
             gSPSegment(gfx++, 0x06, object);
 
@@ -276,17 +276,17 @@ void aTOU_actor_draw(Actor* thisx, Game_Play* game_play) {
         sp68 = ptr->unk_AC(45);
         sp64 = ptr->unk_450(90);
         func_800BD5E8_jp(gfx);
-        gfx = POLY_OPA_DISP;
+        gfx = NOW_POLY_OPA_DISP;
         gSPSegment(gfx++, 0x08, sp64);
         gSegments[6] = OS_K0_TO_PHYSICAL(sp68);
         gSPSegment(gfx++, 0x06, sp68);
-        POLY_OPA_DISP = gfx;
+        NOW_POLY_OPA_DISP = gfx;
         _texture_z_light_fog_prim_xlu(gfx);
 
-        gfx = POLY_XLU_DISP;
+        gfx = NOW_POLY_XLU_DISP;
         gSPSegment(gfx++, 0x08, sp64);
         gSPSegment(gfx++, 0x06, sp68);
-        POLY_XLU_DISP = gfx;
+        NOW_POLY_XLU_DISP = gfx;
         Setpos_HiliteReflect_init(&this->actor.world.pos, game_play);
         Setpos_HiliteReflect_xlu_init(&this->actor.world.pos, game_play);
         cKF_Si3_draw_R_SV(game_play, &this->skeletonInfo, mtx, aTOU_actor_draw_before, aTOU_actor_draw_after, this);

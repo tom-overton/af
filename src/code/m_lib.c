@@ -601,9 +601,9 @@ void Cheap_gfx_display(Game_Play* play, Gfx* dl) {
 
     _texture_z_light_fog_prim(play->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, _Matrix_to_Mtx_new(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(NOW_POLY_OPA_DISP++, _Matrix_to_Mtx_new(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gSPDisplayList(POLY_OPA_DISP++, dl);
+    gSPDisplayList(NOW_POLY_OPA_DISP++, dl);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -616,9 +616,9 @@ void Cheap_gfx_display_xlu(Game_Play* play, Gfx* dl) {
 
     _texture_z_light_fog_prim_xlu(play->state.gfxCtx);
 
-    gSPMatrix(POLY_XLU_DISP++, _Matrix_to_Mtx_new(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(NOW_POLY_XLU_DISP++, _Matrix_to_Mtx_new(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gSPDisplayList(POLY_XLU_DISP++, dl);
+    gSPDisplayList(NOW_POLY_XLU_DISP++, dl);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

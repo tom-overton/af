@@ -275,9 +275,9 @@ void Actor_draw(Game_Play* game_play, Actor* actor) {
 
         gSegments[6] = (uintptr_t)OS_PHYSICAL_TO_K0(segment);
 
-        gSPSegment(POLY_OPA_DISP++, 0x06, segment);
-        gSPSegment(POLY_XLU_DISP++, 0x06, segment);
-        gSPSegment(UNK_2C0_DISP++, 0x06, segment);
+        gSPSegment(NOW_POLY_OPA_DISP++, 0x06, segment);
+        gSPSegment(NOW_POLY_XLU_DISP++, 0x06, segment);
+        gSPSegment(NOW_UNK_2C0_DISP++, 0x06, segment);
     }
 
     actor->draw(actor, game_play);
@@ -1086,7 +1086,7 @@ Hilite* HiliteReflect_init(xyz_t* object, xyz_t* eye, xyz_t* lightDir, GraphicsC
 
     OPEN_DISPS(gfxCtx);
 
-    POLY_OPA_DISP = HiliteReflect_new(object, eye, lightDir, gfxCtx, POLY_OPA_DISP, &hilite);
+    NOW_POLY_OPA_DISP = HiliteReflect_new(object, eye, lightDir, gfxCtx, NOW_POLY_OPA_DISP, &hilite);
 
     CLOSE_DISPS(gfxCtx);
 
@@ -1098,7 +1098,7 @@ Hilite* HiliteReflect_xlu_init(xyz_t* object, xyz_t* eye, xyz_t* lightDir, Graph
 
     OPEN_DISPS(gfxCtx);
 
-    POLY_XLU_DISP = HiliteReflect_new(object, eye, lightDir, gfxCtx, POLY_XLU_DISP, &hilite);
+    NOW_POLY_XLU_DISP = HiliteReflect_new(object, eye, lightDir, gfxCtx, NOW_POLY_XLU_DISP, &hilite);
 
     CLOSE_DISPS(gfxCtx);
 
@@ -1110,7 +1110,7 @@ Hilite* HiliteReflect_light_init(xyz_t* object, xyz_t* eye, xyz_t* lightDir, Gra
 
     OPEN_DISPS(gfxCtx);
 
-    LIGHT_DISP = HiliteReflect_new(object, eye, lightDir, gfxCtx, LIGHT_DISP, &hilite);
+    NOW_LIGHT_DISP = HiliteReflect_new(object, eye, lightDir, gfxCtx, NOW_LIGHT_DISP, &hilite);
 
     CLOSE_DISPS(gfxCtx);
 
