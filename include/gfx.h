@@ -55,6 +55,45 @@ typedef struct GraphicsContext {
     }                       \
     (void)0
 
+#define OPEN_POLY_OPA_DISPS(gfxCtx, temp) \
+    OPEN_DISPS(gfxCtx);                   \
+    {                                     \
+        Gfx* temp = POLY_OPA_DISP;        \
+        s32 __opaPad UNUSED;              \
+        do {} while (0)
+
+#define CLOSE_POLY_OPA_DISPS(gfxCtx, temp) \
+        POLY_OPA_DISP = temp;              \
+        (void)0;                           \
+    }                                      \
+    CLOSE_DISPS(gfxCtx)
+
+#define OPEN_POLY_XLU_DISPS(gfxCtx, temp) \
+    OPEN_DISPS(gfxCtx);                   \
+    {                                     \
+        Gfx* temp = POLY_XLU_DISP;        \
+        s32 __xluPad UNUSED;              \
+        do {} while (0)
+
+#define CLOSE_POLY_XLU_DISPS(gfxCtx, temp) \
+        POLY_XLU_DISP = temp;              \
+        (void)0;                           \
+    }                                      \
+    CLOSE_DISPS(gfxCtx)
+
+#define OPEN_LIGHT_DISPS(gfxCtx, temp) \
+    OPEN_DISPS(gfxCtx);                \
+    {                                  \
+        Gfx* temp = LIGHT_DISP;        \
+        s32 __lightPad UNUSED;         \
+        do {} while (0)
+
+#define CLOSE_LIGHT_DISPS(gfxCtx, temp) \
+        LIGHT_DISP = temp;              \
+        (void)0;                        \
+    }                                   \
+    CLOSE_DISPS(gfxCtx)
+
 #define qs1616(e) ((s32)((e)*0x00010000))
 
 #define IPART(x) ((qs1616(x) >> 16) & 0xFFFF)

@@ -604,8 +604,6 @@ f32 move_data_1027[2][4] = { { 2.0f, 0.0f, 300.0f, 1.0f }, { 0.5f, 120.0f, 0.0f,
 
 void mSM_setup_view(Submenu* submenu, GraphicsContext* gfxCtx, s32 arg1) {
     Mtx* mtx;
-    UNUSED s32 pad;
-    Gfx* gfx;
 
     if (arg1 != 0) {
         mtx = GRAPH_ALLOC(gfxCtx, sizeof(Mtx));
@@ -615,9 +613,8 @@ void mSM_setup_view(Submenu* submenu, GraphicsContext* gfxCtx, s32 arg1) {
         mtx = submenu->unk_2C->unk_1072C;
     }
 
-    OPEN_DISPS(gfxCtx);
+    OPEN_POLY_OPA_DISPS(gfxCtx, gfx);
 
-    gfx = POLY_OPA_DISP;
     if (arg1 == 0) {
         Game_Play1938* var_a0;
 
@@ -640,21 +637,16 @@ void mSM_setup_view(Submenu* submenu, GraphicsContext* gfxCtx, s32 arg1) {
     if (1) {}
 
     gSPMatrix(gfx++, mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
-    POLY_OPA_DISP = gfx;
 
-    CLOSE_DISPS(gfxCtx);
+    CLOSE_POLY_OPA_DISPS(gfxCtx, gfx);
 }
 
 void mSM_set_char_matrix(GraphicsContext* gfxCtx) {
-    Gfx* gfx;
+    OPEN_POLY_OPA_DISPS(gfxCtx, gfx);
 
-    OPEN_DISPS(gfxCtx);
-
-    gfx = POLY_OPA_DISP;
     gSPMatrix(gfx++, &Mtx_clear, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    POLY_OPA_DISP = gfx;
 
-    CLOSE_DISPS(gfxCtx);
+    CLOSE_POLY_OPA_DISPS(gfxCtx, gfx);
 }
 
 #ifdef NON_EQUIVALENT
